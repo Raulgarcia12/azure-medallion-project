@@ -1,0 +1,35 @@
+{
+    "name": "tr_daily_medallion",
+    "type": "Microsoft.DataFactory/factories/triggers",
+    "properties": {
+        "description": "Trigger diario para ejecutar el pipeline Medallion completo a las 6:00 AM",
+        "type": "ScheduleTrigger",
+        "runtimeState": "Stopped",
+        "pipelines": [
+            {
+                "pipelineReference": {
+                    "referenceName": "pl_master_medallion",
+                    "type": "PipelineReference"
+                },
+                "parameters": {}
+            }
+        ],
+        "typeProperties": {
+            "recurrence": {
+                "frequency": "Day",
+                "interval": 1,
+                "startTime": "2024-01-01T06:00:00Z",
+                "timeZone": "SA Pacific Standard Time",
+                "schedule": {
+                    "hours": [6],
+                    "minutes": [0]
+                }
+            }
+        },
+        "annotations": [
+            "medallion-project",
+            "daily",
+            "scheduled"
+        ]
+    }
+}

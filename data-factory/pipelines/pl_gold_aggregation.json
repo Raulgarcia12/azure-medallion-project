@@ -1,0 +1,41 @@
+{
+    "name": "pl_gold_aggregation",
+    "type": "Microsoft.DataFactory/factories/pipelines",
+    "properties": {
+        "description": "Pipeline para ejecutar agregaciones en la capa Gold usando Databricks",
+        "activities": [
+            {
+                "name": "Run Gold Notebook",
+                "type": "DatabricksNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.02:00:00",
+                    "retry": 1,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "notebookPath": "/Shared/medallion-project/03_gold_aggregation"
+                },
+                "linkedServiceName": {
+                    "referenceName": "ls_AzureDatabricks",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "variables": {
+            "execution_status": {
+                "type": "String",
+                "defaultValue": "pending"
+            }
+        },
+        "annotations": [
+            "medallion-project",
+            "gold"
+        ],
+        "folder": {
+            "name": "MedallionProject"
+        }
+    }
+}

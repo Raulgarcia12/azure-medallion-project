@@ -1,0 +1,21 @@
+{
+    "name": "ls_AzureDatabricks",
+    "type": "Microsoft.DataFactory/factories/linkedservices",
+    "properties": {
+        "description": "Conexión a Azure Databricks para ejecutar notebooks del proyecto Medallion",
+        "type": "AzureDatabricks",
+        "typeProperties": {
+            "domain": "https://<TU_DATABRICKS_WORKSPACE>.azuredatabricks.net",
+            "accessToken": {
+                "type": "SecureString",
+                "value": "<TU_DATABRICKS_ACCESS_TOKEN>"
+            },
+            "existingClusterId": "<TU_CLUSTER_ID>",
+            "workspaceResourceId": "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Databricks/workspaces/<WORKSPACE_NAME>"
+        },
+        "annotations": [
+            "medallion-project",
+            "databricks"
+        ]
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "name": "ds_parquet_bronze",
+    "type": "Microsoft.DataFactory/factories/datasets",
+    "properties": {
+        "description": "Dataset para archivos Parquet en la capa Bronze",
+        "type": "Parquet",
+        "linkedServiceName": {
+            "referenceName": "ls_AzureBlobStorage",
+            "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "container": "bronze",
+                "folderPath": "online_retail"
+            },
+            "compressionCodec": "snappy"
+        },
+        "annotations": [
+            "medallion-project",
+            "bronze",
+            "parquet"
+        ]
+    }
+}

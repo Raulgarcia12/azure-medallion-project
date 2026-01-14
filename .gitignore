@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter / Databricks
+.ipynb_checkpoints
+.databricks/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Secrets & Credentials (IMPORTANT)
+*.env
+sp_credentials_*.txt
+secrets.json
+appsettings.json
+*.pem
+*.key
+
+# Azure
+.azure/

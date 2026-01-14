@@ -1,0 +1,18 @@
+{
+    "name": "ls_AzureBlobStorage",
+    "type": "Microsoft.DataFactory/factories/linkedservices",
+    "properties": {
+        "description": "Conexión a Azure Blob Storage para el proyecto Medallion",
+        "type": "AzureBlobStorage",
+        "typeProperties": {
+            "connectionString": {
+                "type": "SecureString",
+                "value": "DefaultEndpointsProtocol=https;AccountName=<TU_STORAGE_ACCOUNT>;AccountKey=<TU_ACCESS_KEY>;EndpointSuffix=core.windows.net"
+            }
+        },
+        "annotations": [
+            "medallion-project",
+            "storage"
+        ]
+    }
+}

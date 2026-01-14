@@ -1,0 +1,131 @@
+{
+    "name": "pl_master_medallion",
+    "type": "Microsoft.DataFactory/factories/pipelines",
+    "properties": {
+        "description": "Pipeline maestro que orquesta la ejecución secuencial de Bronze -> Silver -> Gold",
+        "activities": [
+            {
+                "name": "Mount Storage",
+                "description": "Monta el Azure Storage en Databricks",
+                "type": "DatabricksNotebook",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.00:30:00",
+                    "retry": 2,
+                    "retryIntervalInSeconds": 60,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "notebookPath": "/Shared/medallion-project/00_mount_storage"
+                },
+                "linkedServiceName": {
+                    "referenceName": "ls_AzureDatabricks",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Execute Bronze Pipeline",
+                "description": "Ejecuta la ingesta de datos Bronze",
+                "type": "ExecutePipeline",
+                "dependsOn": [
+                    {
+                        "activity": "Mount Storage",
+                        "dependencyConditions": ["Succeeded"]
+                    }
+                ],
+                "policy": {
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "pipeline": {
+                        "referenceName": "pl_bronze_ingestion",
+                        "type": "PipelineReference"
+                    },
+                    "waitOnCompletion": true
+                }
+            },
+            {
+                "name": "Execute Silver Pipeline",
+                "description": "Ejecuta las transformaciones Silver",
+                "type": "ExecutePipeline",
+                "dependsOn": [
+                    {
+                        "activity": "Execute Bronze Pipeline",
+                        "dependencyConditions": ["Succeeded"]
+                    }
+                ],
+                "policy": {
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "pipeline": {
+                        "referenceName": "pl_silver_transformation",
+                        "type": "PipelineReference"
+                    },
+                    "waitOnCompletion": true
+                }
+            },
+            {
+                "name": "Execute Gold Pipeline",
+                "description": "Ejecuta las agregaciones Gold",
+                "type": "ExecutePipeline",
+                "dependsOn": [
+                    {
+                        "activity": "Execute Silver Pipeline",
+                        "dependencyConditions": ["Succeeded"]
+                    }
+                ],
+                "policy": {
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "pipeline": {
+                        "referenceName": "pl_gold_aggregation",
+                        "type": "PipelineReference"
+                    },
+                    "waitOnCompletion": true
+                }
+            },
+            {
+                "name": "Log Success",
+                "description": "Registra el éxito de la ejecución",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "Execute Gold Pipeline",
+                        "dependencyConditions": ["Succeeded"]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "variableName": "pipeline_status",
+                    "value": "SUCCESS"
+                }
+            }
+        ],
+        "variables": {
+            "pipeline_status": {
+                "type": "String",
+                "defaultValue": "RUNNING"
+            },
+            "start_time": {
+                "type": "String"
+            },
+            "end_time": {
+                "type": "String"
+            }
+        },
+        "annotations": [
+            "medallion-project",
+            "master",
+            "orchestration"
+        ],
+        "folder": {
+            "name": "MedallionProject"
+        }
+    }
+}

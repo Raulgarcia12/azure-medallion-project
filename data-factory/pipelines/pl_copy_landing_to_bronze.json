@@ -1,0 +1,171 @@
+{
+    "name": "pl_copy_landing_to_bronze",
+    "type": "Microsoft.DataFactory/factories/pipelines",
+    "properties": {
+        "description": "Pipeline alternativo que usa Copy Activity para mover datos de Landing a Bronze (sin Databricks). Útil para entender las capacidades nativas de Data Factory.",
+        "activities": [
+            {
+                "name": "Validate Source File",
+                "description": "Verifica que el archivo CSV exista antes de copiar",
+                "type": "Validation",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.00:10:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "dataset": {
+                        "referenceName": "ds_csv_landing",
+                        "type": "DatasetReference"
+                    },
+                    "timeout": "0.00:05:00",
+                    "sleep": 10,
+                    "minimumSize": 1
+                }
+            },
+            {
+                "name": "Get Source Metadata",
+                "description": "Obtiene información del archivo fuente",
+                "type": "GetMetadata",
+                "dependsOn": [
+                    {
+                        "activity": "Validate Source File",
+                        "dependencyConditions": ["Succeeded"]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.00:05:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "dataset": {
+                        "referenceName": "ds_csv_landing",
+                        "type": "DatasetReference"
+                    },
+                    "fieldList": [
+                        "size",
+                        "lastModified",
+                        "itemName"
+                    ],
+                    "storeSettings": {
+                        "type": "AzureBlobStorageReadSettings",
+                        "recursive": false,
+                        "enablePartitionDiscovery": false
+                    }
+                }
+            },
+            {
+                "name": "Copy CSV to Parquet",
+                "description": "Copia datos de CSV (Landing) a Parquet (Bronze)",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Get Source Metadata",
+                        "dependencyConditions": ["Succeeded"]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.01:00:00",
+                    "retry": 2,
+                    "retryIntervalInSeconds": 60,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "source": {
+                        "type": "DelimitedTextSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": false,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "ParquetSink",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "ParquetWriteSettings"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {"source": {"name": "Invoice"}, "sink": {"name": "invoice", "type": "String"}},
+                            {"source": {"name": "StockCode"}, "sink": {"name": "stock_code", "type": "String"}},
+                            {"source": {"name": "Description"}, "sink": {"name": "description", "type": "String"}},
+                            {"source": {"name": "Quantity"}, "sink": {"name": "quantity", "type": "Int32"}},
+                            {"source": {"name": "InvoiceDate"}, "sink": {"name": "invoice_date", "type": "DateTime"}},
+                            {"source": {"name": "Price"}, "sink": {"name": "price", "type": "Double"}},
+                            {"source": {"name": "Customer ID"}, "sink": {"name": "customer_id", "type": "Double"}},
+                            {"source": {"name": "Country"}, "sink": {"name": "country", "type": "String"}}
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "ds_csv_landing",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "ds_parquet_bronze",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "Log Copy Metrics",
+                "description": "Registra métricas de la operación de copia",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "Copy CSV to Parquet",
+                        "dependencyConditions": ["Succeeded"]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "variableName": "rows_copied",
+                    "value": {
+                        "value": "@string(activity('Copy CSV to Parquet').output.rowsCopied)",
+                        "type": "Expression"
+                    }
+                }
+            }
+        ],
+        "variables": {
+            "rows_copied": {
+                "type": "String",
+                "defaultValue": "0"
+            },
+            "source_file_size": {
+                "type": "String",
+                "defaultValue": "0"
+            }
+        },
+        "annotations": [
+            "medallion-project",
+            "copy-activity",
+            "landing-to-bronze"
+        ],
+        "folder": {
+            "name": "MedallionProject/Alternatives"
+        }
+    }
+}

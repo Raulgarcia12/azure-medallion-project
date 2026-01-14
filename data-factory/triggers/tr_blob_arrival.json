@@ -1,0 +1,32 @@
+{
+    "name": "tr_blob_arrival",
+    "type": "Microsoft.DataFactory/factories/triggers",
+    "properties": {
+        "description": "Trigger que se activa cuando llega un nuevo archivo CSV al container landing",
+        "type": "BlobEventsTrigger",
+        "runtimeState": "Stopped",
+        "pipelines": [
+            {
+                "pipelineReference": {
+                    "referenceName": "pl_master_medallion",
+                    "type": "PipelineReference"
+                },
+                "parameters": {}
+            }
+        ],
+        "typeProperties": {
+            "blobPathBeginsWith": "/landing/blobs/",
+            "blobPathEndsWith": ".csv",
+            "ignoreEmptyBlobs": true,
+            "scope": "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Storage/storageAccounts/<STORAGE_ACCOUNT>",
+            "events": [
+                "Microsoft.Storage.BlobCreated"
+            ]
+        },
+        "annotations": [
+            "medallion-project",
+            "event-based",
+            "blob-trigger"
+        ]
+    }
+}

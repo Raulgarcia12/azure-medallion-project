@@ -1,0 +1,39 @@
+{
+    "name": "ds_csv_landing",
+    "type": "Microsoft.DataFactory/factories/datasets",
+    "properties": {
+        "description": "Dataset para archivos CSV en la zona de landing",
+        "type": "DelimitedText",
+        "linkedServiceName": {
+            "referenceName": "ls_AzureBlobStorage",
+            "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "container": "landing",
+                "fileName": "online_retail_II.csv"
+            },
+            "columnDelimiter": ",",
+            "escapeChar": "\\",
+            "quoteChar": "\"",
+            "firstRowAsHeader": true,
+            "encodingName": "UTF-8"
+        },
+        "schema": [
+            {"name": "Invoice", "type": "String"},
+            {"name": "StockCode", "type": "String"},
+            {"name": "Description", "type": "String"},
+            {"name": "Quantity", "type": "Int32"},
+            {"name": "InvoiceDate", "type": "DateTime"},
+            {"name": "Price", "type": "Double"},
+            {"name": "Customer ID", "type": "Double"},
+            {"name": "Country", "type": "String"}
+        ],
+        "annotations": [
+            "medallion-project",
+            "landing",
+            "csv"
+        ]
+    }
+}
