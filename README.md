@@ -89,5 +89,5 @@ Nota: Este proyecto utiliza **Vistas Temporales** de Spark para compatibilidad c
 ---
 
 ## 📧 Contacto
-Proyecto creado para el curso de Data Engineering.
+Proyecto creado por GRaul Garcia. GRaulgarcia12@gmail.com
 
