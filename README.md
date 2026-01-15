@@ -1,6 +1,6 @@
 # 🏗️ Azure Data Engineering Project: Storage + Databricks + Data Factory
 
-## Proyecto Educativo: Arquitectura Medallion con Servicios Azure
+## Proyecto: Arquitectura Medallion con Servicios Azure
 
 Este proyecto te guiará paso a paso para construir una pipeline de datos completa utilizando:
 - **Azure Blob Storage** - Almacenamiento de datos
@@ -71,6 +71,13 @@ Usaremos el dataset **Online Retail II** de Kaggle que contiene transacciones de
 3. **Agregación (Gold)**: Ejecutar `03_gold_aggregation.py`. Genera métricas de negocio.
 
 Nota: Este proyecto utiliza **Vistas Temporales** de Spark para compatibilidad con workspaces modernos donde DBFS root está deshabilitado.
+
+Esta vista es de la orquestacion de DataFactory
+<img width="1857" height="884" alt="image" src="https://github.com/user-attachments/assets/8cfb1b89-fd6e-4584-a557-8c78d39abed5" />
+ Esta Vista es desde Databricks haciendo un job y cargando todo para orquestarlo desde Azure DataFactory
+ <img width="1780" height="807" alt="image" src="https://github.com/user-attachments/assets/f921e186-46e1-4677-91ce-7a83da97adcc" />
+<img width="1533" height="780" alt="image" src="https://github.com/user-attachments/assets/4ca68bca-3045-4fd0-a9ff-1c03baa6a003" />
+
 
 ---
 
