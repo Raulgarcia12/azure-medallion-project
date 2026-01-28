@@ -1,13 +1,7 @@
 #!/bin/bash
-# =============================================================================
-# Script: setup_containers.sh
-# Descripción: Crea los containers necesarios en Azure Blob Storage
-# Requisitos: Azure CLI instalado y autenticado (az login)
-# =============================================================================
 
-# Configuración - REEMPLAZAR CON TUS VALORES
-STORAGE_ACCOUNT_NAME="tuStorageAccount"
-RESOURCE_GROUP="tuResourceGroup"
+STORAGE_ACCOUNT_NAME="StorageAccount"
+RESOURCE_GROUP="ResourceGroup"
 
 # Containers a crear
 CONTAINERS=("landing" "bronze" "silver" "gold")
