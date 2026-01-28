@@ -1,10 +1,4 @@
-# 📚 Guía Paso a Paso: Proyecto Medallion con Azure
-
-Esta guía te llevará desde cero hasta tener una pipeline de datos funcionando con Azure Storage, Databricks y Data Factory.
-
----
-
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 1. [Prerrequisitos](#prerrequisitos)
 2. [Paso 1: Crear Azure Storage Account](#paso-1-crear-azure-storage-account)
@@ -70,7 +64,7 @@ Una vez creado el Storage Account:
 3. Copia `key1` - la necesitarás para Databricks
 
 ```
-⚠️ IMPORTANTE: Guarda esta key de forma segura.
+IMPORTANTE: Guarda esta key de forma segura.
 En producción, usa Key Vault o Managed Identity.
 ```
 
@@ -313,7 +307,7 @@ dbutils.fs.unmount("/mnt/landing")
 
 ---
 
-## 📊 Métricas de Éxito
+## Métricas de Éxito
 
 Al finalizar, deberías tener:
 
@@ -326,7 +320,7 @@ Al finalizar, deberías tener:
 
 ---
 
-## 🎓 Conceptos Aprendidos
+## Conceptos Aprendidos
 
 Al completar este proyecto habrás practicado:
 
@@ -351,16 +345,4 @@ Al completar este proyecto habrás practicado:
 - ✅ Orquestar flujos de datos
 - ✅ Monitorear ejecuciones
 
----
 
-## 🚀 Próximos Pasos
-
-1. **Agregar más fuentes de datos** al landing
-2. **Implementar CDC** (Change Data Capture)
-3. **Conectar Power BI** a la capa Gold
-4. **Agregar alertas** en Data Factory
-5. **Migrar a Key Vault** para seguridad en producción
-
----
-
-¡Felicitaciones por completar el proyecto! 🎉
