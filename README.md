@@ -8,7 +8,7 @@
 
 ### Dataset: Online Retail Dataset (Kaggle)
 
-Use el dataset **Online Retail II** de Kaggle que contiene transacciones de una tienda de retail online del Reino Unido.
+Usé el dataset **Online Retail II** de Kaggle que contiene transacciones de una tienda de retail online del Reino Unido.
 
  https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci
 
@@ -47,14 +47,14 @@ Use el dataset **Online Retail II** de Kaggle que contiene transacciones de una 
 
 ## Implementación
 
-### Paso 1: Configure Azure & Service Principal
+### Paso 1: Aqui configuré Azure & Service Principal
 1. Puedes seguir la guía en `docs/service_principal_setup.md` para crear tu identidad de servicio en Azure AD.
-2. Asigne el rol **Storage Blob Data Contributor** al Service Principal en tu Storage Account.
-3. Cree los containers (`landing`, `bronze`, `silver`, `gold`).
+2. Asigné el rol **Storage Blob Data Contributor** al Service Principal en tu Storage Account.
+3. Creé los containers (`landing`, `bronze`, `silver`, `gold`).
 
 ### Paso 2: Configuración de Entorno
-1. Clone este repositorio.
-2. En los notebooks de `notebooks/`, configure credenciales:
+1. Clonando repositorio.
+2. En los notebooks de `notebooks/`, configuré credenciales:
    ```python
    storage_account_name = "storage-account"
    service_principal_client_id = "client-id"
