@@ -1,48 +1,19 @@
-# Databricks notebook source
-# MAGIC %md
-# MAGIC # 🥇 Capa Gold: Agregaciones de Negocio
-# MAGIC 
-# MAGIC ## Objetivo
-# MAGIC Crear tablas agregadas listas para consumo de negocio:
-# MAGIC - Métricas de ventas por país
-# MAGIC - Análisis de productos top
-# MAGIC - Métricas de clientes (RFM)
-# MAGIC - Tendencias temporales
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Imports y Configuración
-
-# COMMAND ----------
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 from pyspark.sql.window import Window
 from datetime import datetime
 
-# COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## Definir Paths y Configuración ADLS Gen2
-
-# COMMAND ----------
-
-# ========================================
-# CONFIGURACIÓN DEL STORAGE ACCOUNT
-# ========================================
-
-# ⚠️ IMPORTANTE: Actualiza estos valores
-storage_account_name = "adlsdatahack90"  # Tu Storage Account
+storage_account_name = "adlsdatahack90" 
 
 # ----------------------------------------
 # Credenciales de Service Principal
 # ----------------------------------------
-service_principal_client_id = "tuClientId"        # Application (client) ID
-service_principal_client_secret = "tuClientSecret"  # Client Secret
-service_principal_tenant_id = "tuTenantId"        # Directory (tenant) ID
-
-# COMMAND ----------
+service_principal_client_id = "ClientId"        
+service_principal_client_secret = "ClientSecret" 
+service_principal_tenant_id = "TenantId"        
 
 # ========================================
 # CONFIGURAR AUTENTICACIÓN OAUTH 2.0
@@ -80,7 +51,6 @@ def configure_service_principal():
 # Ejecutar configuración
 configure_service_principal()
 
-# COMMAND ----------
 
 # ========================================
 # DEFINIR PATHS ADLS GEN2
@@ -101,13 +71,6 @@ GOLD_TOP_PRODUCTS = get_adls_path("gold", "top_products")
 GOLD_CUSTOMER_METRICS = get_adls_path("gold", "customer_metrics")
 GOLD_DAILY_TRENDS = get_adls_path("gold", "daily_trends")
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Leer Datos de Silver
-
-# COMMAND ----------
-
 # Leer datos de la capa Silver
 df_silver = (spark.read
     .format("delta")
@@ -118,24 +81,11 @@ df_silver = (spark.read
 print(f"✅ Datos leídos de Silver: {df_silver.count():,} registros")
 print(f"  (Excluyendo transacciones canceladas)")
 
-# COMMAND ----------
 
 # Cache para mejor performance en múltiples agregaciones
 df_silver.cache()
 print("✅ DataFrame cacheado para optimizar agregaciones")
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ---
-# MAGIC ## 📊 Tabla Gold 1: Ventas por País
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC Métricas de ventas agregadas por país
-
-# COMMAND ----------
 
 df_sales_country = (df_silver
     .groupBy("country")
@@ -159,8 +109,6 @@ df_sales_country = (df_silver
 
 display(df_sales_country)
 
-# COMMAND ----------
-
 # Guardar tabla Gold
 (df_sales_country
     .write
@@ -170,19 +118,6 @@ display(df_sales_country)
 )
 
 print(f"✅ Tabla sales_by_country guardada: {df_sales_country.count()} países")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ---
-# MAGIC ## 📊 Tabla Gold 2: Top Productos
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC Los productos más vendidos con métricas detalladas
-
-# COMMAND ----------
 
 # Métricas por producto
 df_products = (df_silver
@@ -210,7 +145,6 @@ df_top_products = (df_products
 
 display(df_top_products.limit(20))
 
-# COMMAND ----------
 
 # Guardar tabla Gold
 (df_top_products
@@ -221,19 +155,6 @@ display(df_top_products.limit(20))
 )
 
 print(f"✅ Tabla top_products guardada: {df_top_products.count()} productos")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ---
-# MAGIC ## 📊 Tabla Gold 3: Métricas de Clientes (RFM)
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC Análisis RFM (Recency, Frequency, Monetary) por cliente
-
-# COMMAND ----------
 
 # Fecha de referencia (última fecha en el dataset)
 max_date = df_silver.select(max("invoicedate")).collect()[0][0]
@@ -300,12 +221,10 @@ df_customer_metrics = (df_rfm
 
 display(df_customer_metrics.orderBy(desc("monetary_value")).limit(20))
 
-# COMMAND ----------
 
 # Distribución de segmentos
 display(df_customer_metrics.groupBy("customer_segment").count().orderBy(desc("count")))
 
-# COMMAND ----------
 
 # Guardar tabla Gold
 (df_customer_metrics
@@ -317,18 +236,6 @@ display(df_customer_metrics.groupBy("customer_segment").count().orderBy(desc("co
 
 print(f"✅ Tabla customer_metrics guardada: {df_customer_metrics.count()} clientes")
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ---
-# MAGIC ## 📊 Tabla Gold 4: Tendencias Diarias
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC Métricas agregadas por día para análisis de tendencias
-
-# COMMAND ----------
 
 df_daily = (df_silver
     .withColumn("date", to_date("invoicedate"))
@@ -360,8 +267,6 @@ df_daily = (df_silver
 
 display(df_daily)
 
-# COMMAND ----------
-
 # Guardar tabla Gold
 (df_daily
     .write
@@ -372,14 +277,6 @@ display(df_daily)
 
 print(f"✅ Tabla daily_trends guardada: {df_daily.count()} días")
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Crear Tablas en Catálogo
-
-# COMMAND ----------
-
-# Registrar todas las tablas Gold en el catálogo
 # Registrar todas las tablas Gold
 gold_tables = [
     ("gold_sales_by_country", GOLD_SALES_BY_COUNTRY),
@@ -388,9 +285,9 @@ gold_tables = [
     ("gold_daily_trends", GOLD_DAILY_TRENDS)
 ]
 
-# ========================================
-# OPCIÓN 1: Crear Vistas Temporales
-# ========================================
+
+#  Crear Vistas Temporales
+
 
 print("📊 Creando vistas temporales...")
 for table_name, path in gold_tables:
@@ -403,41 +300,11 @@ for table_name, path in gold_tables:
 
 print("\n   Puedes consultar usando: SELECT * FROM sales_by_country")
 
-# ========================================
-# OPCIÓN 2: Unity Catalog (Si está habilitado)
-# ========================================
-# Descomenta si tienes Unity Catalog
-
-"""
-spark.sql("CREATE SCHEMA IF NOT EXISTS tu_catalogo.retail_medallion")
-
-for table_name, path in gold_tables:
-    spark.sql(f'''
-        CREATE TABLE IF NOT EXISTS tu_catalogo.retail_medallion.{table_name}
-        USING DELTA
-        LOCATION '{path}'
-    ''')
-    print(f"✅ Tabla Unity Catalog creada: {table_name}")
-"""
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Liberar Cache
-
-# COMMAND ----------
 
 df_silver.unpersist()
 print("✅ Cache liberado")
 
-# COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## Resumen de la Capa Gold
-
-# COMMAND ----------
-
-# Resumen de tablas creadas
 print("=" * 70)
 print("📊 RESUMEN CAPA GOLD")
 print("=" * 70)
@@ -454,17 +321,7 @@ print("=" * 70)
 print(f"⏰ Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 print("=" * 70)
 
-# COMMAND ----------
 
-# MAGIC %md
-# MAGIC ## Queries de Ejemplo
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ### Top 5 países por revenue
-
-# COMMAND ----------
 
 display(spark.sql("""
     SELECT country, total_revenue, unique_customers, revenue_per_customer
@@ -473,12 +330,7 @@ display(spark.sql("""
     LIMIT 5
 """))
 
-# COMMAND ----------
 
-# MAGIC %md
-# MAGIC ### Distribución de segmentos de clientes
-
-# COMMAND ----------
 
 display(spark.sql("""
     SELECT 
@@ -491,12 +343,7 @@ display(spark.sql("""
     ORDER BY avg_value DESC
 """))
 
-# COMMAND ----------
 
-# MAGIC %md
-# MAGIC ### Ventas por día de la semana
-
-# COMMAND ----------
 
 display(spark.sql("""
     SELECT 
@@ -508,15 +355,3 @@ display(spark.sql("""
     ORDER BY day_of_week
 """))
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ---
-# MAGIC ## ✅ Pipeline Completado
-# MAGIC 
-# MAGIC La arquitectura Medallion está completa:
-# MAGIC - **Bronze**: Datos raw en Parquet
-# MAGIC - **Silver**: Datos limpios en Delta Lake
-# MAGIC - **Gold**: Agregaciones de negocio en Delta Lake
-# MAGIC 
-# MAGIC Ahora puedes orquestar todo con Azure Data Factory.
