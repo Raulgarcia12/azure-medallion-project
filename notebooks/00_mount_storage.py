@@ -1,61 +1,18 @@
-# Databricks notebook source
-# MAGIC %md
-# MAGIC # 🔌 Configurar Acceso a Azure Data Lake Storage Gen2 en Databricks
-# MAGIC 
-# MAGIC Este notebook configura el acceso directo entre Databricks y ADLS Gen2
-# MAGIC usando Access Key (método directo sin montaje DBFS).
-# MAGIC 
-# MAGIC **Nota**: Los montajes DBFS están deshabilitados en workspaces modernos de Databricks.
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Configuración de Variables
-# MAGIC 
-# MAGIC ⚠️ **IMPORTANTE**: Reemplaza estos valores con los de tu Storage Account
-
-# COMMAND ----------
-
-# ========================================
 # CONFIGURACIÓN DEL STORAGE ACCOUNT
-# ========================================
 
-storage_account_name = "tuStorageAccount"  # Reemplazar con tu nombre de storage
+
+storage_account_name = "StorageAccount"  # ejemplo
 container_names = ["landing", "bronze", "silver", "gold"]
 
-# ----------------------------------------
-# Opción 1: Access Key (menos seguro, más simple)
-# ----------------------------------------
-storage_account_key = "tuAccessKey"  # Reemplazar con tu Access Key
 
-# ----------------------------------------
-# Opción 2: Service Principal (recomendado para producción)
-# ----------------------------------------
-service_principal_client_id = "tuClientId"        # Application (client) ID
-service_principal_client_secret = "tuClientSecret"  # Client Secret
-service_principal_tenant_id = "tuTenantId"        # Directory (tenant) ID
+service_principal_client_id = "ClientId"        
+service_principal_client_secret = "ClientSecret"  
+service_principal_tenant_id = "TenantId"       
 
-# ----------------------------------------
 # Seleccionar método de autenticación
-# ----------------------------------------
-# Opciones: "access_key" o "service_principal"
+
 auth_method = "service_principal"
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Configuración de Acceso Directo a ADLS Gen2
-# MAGIC 
-# MAGIC Este notebook soporta dos métodos de autenticación:
-# MAGIC 
-# MAGIC | Método | Seguridad | Uso Recomendado |
-# MAGIC |--------|-----------|-----------------|
-# MAGIC | **Access Key** | Básica | Desarrollo/Pruebas |
-# MAGIC | **Service Principal** | Alta (OAuth 2.0) | Producción |
-# MAGIC 
-# MAGIC **Nota**: Los montajes DBFS están deshabilitados en workspaces modernos de Databricks.
-
-# COMMAND ----------
 
 def configure_access_key(storage_account_name, storage_account_key):
     """
@@ -182,34 +139,11 @@ print("=" * 60)
 print("✅ Configuración completada")
 print("=" * 60)
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Información de Rutas de Acceso
-# MAGIC 
-# MAGIC Con la configuración anterior, puedes acceder a tus containers usando el protocolo ADLS Gen2:
-# MAGIC 
-# MAGIC ```python
-# MAGIC # Formato de ruta ADLS Gen2:
-# MAGIC # abfss://<container>@<storage_account>.dfs.core.windows.net/<path>
-# MAGIC 
-# MAGIC # Ejemplo:
-# MAGIC df = spark.read.parquet(f"abfss://landing@{storage_account_name}.dfs.core.windows.net/data/")
-# MAGIC ```
-
-# COMMAND ----------
 
 # Mostrar información de acceso
 print("✅ Configuración de acceso directo completada")
 print(f"📂 Formato de ruta: abfss://<container>@{storage_account_name}.dfs.core.windows.net/<path>")
 print(f"\n📋 Containers disponibles: {', '.join(container_names)}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Probar Acceso a Containers
-
-# COMMAND ----------
 
 # Verificar acceso al container landing usando ADLS Gen2
 try:
@@ -223,12 +157,6 @@ try:
 except Exception as e:
     print(f"⚠️ Container 'landing' vacío o no accesible: {str(e)}")
 
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ## Funciones Útiles para el Proyecto
-
-# COMMAND ----------
 
 def get_storage_path(layer: str, path: str = "", storage_account: str = None) -> str:
     """
@@ -281,16 +209,3 @@ print("  - file_exists(layer, path): Verifica existencia de archivo")
 print("\nEjemplo:")
 print(f"  get_storage_path('landing', 'data/file.csv')")
 print(f"  → {get_storage_path('landing', 'data/file.csv')}")
-
-# COMMAND ----------
-
-# MAGIC %md
-# MAGIC ---
-# MAGIC ## ✅ Próximo Paso
-# MAGIC 
-# MAGIC Continúa con el notebook **01_bronze_ingestion.py** para ingestar los datos raw.
-# MAGIC 
-# MAGIC **Nota**: Asegúrate de actualizar las rutas en tus notebooks para usar el formato ADLS Gen2:
-# MAGIC ```python
-# MAGIC abfss://<container>@<storage_account>.dfs.core.windows.net/<path>
-# MAGIC ```
