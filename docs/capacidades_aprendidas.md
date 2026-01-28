@@ -164,8 +164,8 @@ Mount → Bronze → Silver → Gold
 
 ## 🔐 Consideraciones de Seguridad (Producción)
 
-Este proyecto usa Access Keys directos para simplificar el aprendizaje. 
-En producción, deberías usar:
+En este proyecto uso Access Keys directos para simplificar. 
+En producción, uso:
 
 | Método Desarrollo | Método Producción |
 |-------------------|-------------------|
