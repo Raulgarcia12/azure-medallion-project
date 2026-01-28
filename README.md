@@ -8,7 +8,7 @@
 
 ### Dataset: Online Retail Dataset (Kaggle)
 
-Usaremos el dataset **Online Retail II** de Kaggle que contiene transacciones de una tienda de retail online del Reino Unido.
+Use el dataset **Online Retail II** de Kaggle que contiene transacciones de una tienda de retail online del Reino Unido.
 
  https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci
 
@@ -95,4 +95,5 @@ Esta vista es de la orquestacion de DataFactory
 
 ## 📧 Contacto
 Proyecto creado por GRaul Garcia. GRaulgarcia12@gmail.com
+LinkedIn: linkedin.com/in/graulgarcia
 
