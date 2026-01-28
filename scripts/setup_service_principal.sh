@@ -2,14 +2,6 @@
 
 ###############################################################################
 # Script de Configuración: Service Principal para ADLS Gen2
-# 
-# Este script automatiza la creación de un Service Principal y la asignación
-# de permisos en Azure Data Lake Storage Gen2.
-#
-# Requisitos:
-# - Azure CLI instalado y configurado
-# - Permisos de Contributor en la suscripción
-# - Permisos para crear aplicaciones en Azure AD
 ###############################################################################
 
 set -e  # Salir si hay algún error
