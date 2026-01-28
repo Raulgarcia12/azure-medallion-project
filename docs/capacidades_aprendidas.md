@@ -1,12 +1,10 @@
-# 🎓 Capacidades y Servicios Azure - Resumen de Aprendizaje
+# Capacidades y Servicios Azure
 
-Este documento resume todas las capacidades y servicios de Azure que se practican en este proyecto.
+Este documento resume todas las capacidades y servicios de Azure que se aplicaron mi proyecto.
 
 ---
 
-## 📦 Azure Blob Storage
-
-### Conceptos Cubiertos
+## Azure Blob Storage
 
 | Concepto | Descripción | Dónde se usa |
 |----------|-------------|--------------|
@@ -16,7 +14,7 @@ Este documento resume todas las capacidades y servicios de Azure que se practica
 | **Access Keys** | Autenticación basada en llaves | Conexión Databricks |
 | **Connection String** | Cadena de conexión completa | Data Factory Linked Service |
 
-### Operaciones Practicadas
+### Ops Ejecutadas
 - ✅ Crear Storage Account
 - ✅ Crear y gestionar containers
 - ✅ Subir archivos (blobs)
@@ -32,8 +30,6 @@ Este documento resume todas las capacidades y servicios de Azure que se practica
 
 ## 🔷 Azure Databricks
 
-### Conceptos Cubiertos
-
 | Concepto | Descripción | Dónde se usa |
 |----------|-------------|--------------|
 | **Workspace** | Ambiente de desarrollo | Contiene notebooks, clusters |
@@ -43,7 +39,6 @@ Este documento resume todas las capacidades y servicios de Azure que se practica
 | **Delta Lake** | Formato de tabla ACID | Capas Silver y Gold |
 | **Catalog** | Metadatos de tablas | `retail_medallion` database |
 
-### Operaciones Practicadas
 
 **Gestión de Clusters:**
 - ✅ Crear cluster interactivo
@@ -97,9 +92,8 @@ Este documento resume todas las capacidades y servicios de Azure que se practica
 
 ---
 
-## 🏭 Azure Data Factory
+## Azure Data Factory
 
-### Conceptos Cubiertos
 
 | Concepto | Descripción | Dónde se usa |
 |----------|-------------|--------------|
@@ -176,7 +170,7 @@ En producción, deberías usar:
 | Método Desarrollo | Método Producción |
 |-------------------|-------------------|
 | Access Key en código | Azure Key Vault |
-| Token estático | Managed Identity |
+| Token estático   | Managed Identity |
 | Permisos amplios | RBAC granular |
 | Sin encriptación | Customer-managed keys |
 
@@ -198,7 +192,7 @@ En producción, deberías usar:
 
 ---
 
-## 📊 Métricas del Proyecto
+## Métricas del Proyecto
 
 | Métrica | Valor Aproximado |
 |---------|------------------|
@@ -211,11 +205,10 @@ En producción, deberías usar:
 
 ---
 
-## 🎯 Skills Demostrados
+## Mis Skills en este proyecto
 
-Al completar este proyecto, puedes demostrar experiencia en:
 
-- ✅ Diseño de arquitectura Medallion
+- ✅ Diseñe arquitectura Medallion
 - ✅ Azure Blob Storage administration
 - ✅ Azure Databricks development
 - ✅ Apache Spark / PySpark
@@ -225,6 +218,4 @@ Al completar este proyecto, puedes demostrar experiencia en:
 - ✅ Data quality management
 - ✅ Cloud data engineering
 
----
 
-*Proyecto educativo para el curso de Data Engineering*
