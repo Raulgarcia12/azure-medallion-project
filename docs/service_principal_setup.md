@@ -1,31 +1,8 @@
-# 🔐 Guía de Configuración: Service Principal para ADLS Gen2
+# Configuración: Service Principal para ADLS Gen2
 
-Esta guía te llevará paso a paso para crear y configurar un Service Principal en Azure Active Directory para autenticarte de forma segura con Azure Data Lake Storage Gen2.
+Service Principal en Azure Active Directory para autenticaricacion de forma segura con Azure Data Lake Storage Gen2.
 
----
-
-## 📋 Requisitos Previos
-
-- Suscripción activa de Azure
-- Permisos de **Contributor** o **Owner** en la suscripción
-- Permisos para crear aplicaciones en Azure Active Directory
-- Azure CLI instalado (opcional, pero recomendado)
-
----
-
-## 🎯 ¿Qué es un Service Principal?
-
-Un **Service Principal** es una identidad de seguridad utilizada por aplicaciones, servicios y herramientas de automatización para acceder a recursos específicos de Azure. Es similar a una "cuenta de servicio" en otros sistemas.
-
-### Ventajas sobre Access Key:
-- ✅ **Seguridad**: No expone las claves del Storage Account
-- ✅ **Control granular**: Permisos específicos con RBAC
-- ✅ **Auditoría**: Registro completo de accesos
-- ✅ **Rotación**: Cambio de secretos sin afectar el código
-
----
-
-## 🚀 Método 1: Crear Service Principal con Azure Portal
+## Método 1: Crear Service Principal con Azure Portal *En este proyecto yo use este metodo pero aqui abajo te dejo otro*
 
 ### Paso 1: Crear una App Registration
 
@@ -85,7 +62,7 @@ Después de crear la aplicación, verás la página de **Overview**:
 
 ---
 
-## 🖥️ Método 2: Crear Service Principal con Azure CLI
+## Método 2: Crear Service Principal con Azure CLI
 
 Este método es más rápido y automatizado.
 
@@ -138,11 +115,11 @@ Mapea estos valores:
 
 ---
 
-## 🔒 Mejores Prácticas de Seguridad
+## Las Mejores Prácticas de Seguridad
 
-### 1. Usar Azure Key Vault (Recomendado para Producción)
+### 1. Usar Azure Key Vault (En las buenas practicas es recomendado para Producción)
 
-En lugar de hardcodear los secretos en el notebook, usa Azure Key Vault:
+Usa Azure Key Vault:
 
 ```python
 # En Databricks, crear un secret scope
@@ -165,7 +142,7 @@ tenant_id = dbutils.secrets.get(scope="adls-secrets", key="tenant-id")
 Asigna solo los permisos necesarios:
 - **Lectura**: `Storage Blob Data Reader`
 - **Lectura/Escritura**: `Storage Blob Data Contributor`
-- **Control total**: `Storage Blob Data Owner` (solo si es absolutamente necesario)
+- **Control total**: `Storage Blob Data Owner` (yo te lo recomiendo solo si es absolutamente necesario)
 
 ### 3. Rotación de Secretos
 
@@ -213,11 +190,11 @@ configure_service_principal(
 )
 ```
 
-Si ves el mensaje `✅ Service Principal configurado exitosamente`, ¡todo está funcionando!
+Si ves el mensaje `✅ Service Principal configurado exitosamente`, fue exitoso si no aqui abajo te dejo algunos errores que a mi me han salido.
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Error: "Forbidden" o "Authorization failed"
 
@@ -246,18 +223,11 @@ Si ves el mensaje `✅ Service Principal configurado exitosamente`, ¡todo está
 
 ---
 
-## 📚 Recursos Adicionales
+## Te dejo recursos Adicionales
 
 - [Documentación oficial de Service Principals](https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals)
 - [RBAC para Azure Storage](https://docs.microsoft.com/azure/storage/common/storage-auth-aad-rbac-portal)
 - [Databricks Secret Scopes](https://docs.microsoft.com/azure/databricks/security/secrets/secret-scopes)
 - [ADLS Gen2 Access Control](https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-access-control)
 
----
 
-## 🎓 Próximos Pasos
-
-1. ✅ Crear Service Principal (completado con esta guía)
-2. 📝 Configurar secretos en Azure Key Vault
-3. 🔗 Conectar Databricks con Key Vault
-4. 🚀 Ejecutar notebooks con autenticación segura
