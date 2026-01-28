@@ -1,21 +1,19 @@
-# 🏗️ Azure Data Engineering Project: Storage + Databricks + Data Factory
+# Azure Data Engineering Project: Storage + Databricks + Data Factory
 
 ## Proyecto: Arquitectura Medallion con Servicios Azure
 
-Este proyecto te guiará paso a paso para construir una pipeline de datos completa utilizando:
 - **Azure Blob Storage** - Almacenamiento de datos
 - **Azure Databricks** - Procesamiento con arquitectura Medallion (Bronze → Silver → Gold)
 - **Azure Data Factory** - Orquestación de pipelines
 
-### 📊 Dataset: Online Retail Dataset (Kaggle)
+### Dataset: Online Retail Dataset (Kaggle)
 
 Usaremos el dataset **Online Retail II** de Kaggle que contiene transacciones de una tienda de retail online del Reino Unido.
 
-**Descarga:** https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci
+ https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci
 
----
 
-## 🏛️ Arquitectura del Proyecto
+## Arquitectura del Proyecto
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -47,23 +45,23 @@ Usaremos el dataset **Online Retail II** de Kaggle que contiene transacciones de
 
 ---
 
-## 🚀 Guía Rápida de Implementación
+## Implementación
 
-### Paso 1: Configurar Azure & Service Principal
-1. Seguir la guía en `docs/service_principal_setup.md` para crear tu identidad de servicio en Azure AD.
-2. Asignar el rol **Storage Blob Data Contributor** al Service Principal en tu Storage Account.
-3. Crear los containers (`landing`, `bronze`, `silver`, `gold`).
+### Paso 1: Configure Azure & Service Principal
+1. Puedes seguir la guía en `docs/service_principal_setup.md` para crear tu identidad de servicio en Azure AD.
+2. Asigne el rol **Storage Blob Data Contributor** al Service Principal en tu Storage Account.
+3. Cree los containers (`landing`, `bronze`, `silver`, `gold`).
 
 ### Paso 2: Configuración de Entorno
-1. Clonar este repositorio.
-2. En los notebooks de `notebooks/`, configurar tus credenciales:
+1. Clone este repositorio.
+2. En los notebooks de `notebooks/`, configure credenciales:
    ```python
-   storage_account_name = "tu-storage-account"
-   service_principal_client_id = "tu-client-id"
-   service_principal_client_secret = "tu-client-secret"
-   service_principal_tenant_id = "tu-tenant-id"
+   storage_account_name = "storage-account"
+   service_principal_client_id = "client-id"
+   service_principal_client_secret = "client-secret"
+   service_principal_tenant_id = "tenant-id"
    ```
-   > 🔒 **Recomendación**: En producción, utilizar Azure Key Vault backed scopes en Databricks.
+   > En producción, utilizar Azure Key Vault backed scopes en Databricks.
 
 ### Paso 3: Ejecución de la Pipeline
 1. **Ingesta (Bronze)**: Ejecutar `01_bronze_ingestion.py`. Ingesta datos crudos a Parquet.
@@ -81,7 +79,7 @@ Esta vista es de la orquestacion de DataFactory
 
 ---
 
-## 📚 Conceptos Clave que Aprenderás
+## Conceptos Clave:
 
 ### Azure Data Lake Gen2
 - Jerarquías de archivos y seguridad con ACLs/RBAC.
